@@ -16,9 +16,10 @@ import Loader from '@/components/Loader/Loader';
 interface NotesProps {
   initialQuery: string;
   initialPage: number;
+  selectedTag?: string;
 }
 
-function Notes({ initialQuery, initialPage }: NotesProps) {
+function Notes({ initialQuery, initialPage, selectedTag }: NotesProps) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [modalState, setModalState] = useState(false);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
@@ -41,8 +42,8 @@ function Notes({ initialQuery, initialPage }: NotesProps) {
     isPlaceholderData,
     error,
   } = useQuery({
-    queryKey: ['notes', searchQuery, currentPage],
-    queryFn: () => FetchNotes(currentPage, searchQuery),
+    queryKey: ['notes', searchQuery, currentPage, selectedTag],
+    queryFn: () => FetchNotes(currentPage, searchQuery, selectedTag),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });

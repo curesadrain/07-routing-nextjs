@@ -5,10 +5,14 @@ import type { NoteFormValues } from '@/components/NoteForm/NoteForm';
 interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
+  tag?: string;
 }
 
 const api = axios.create({
   baseURL: 'https://notehub-public.goit.study/api',
+  params: {
+    perPage: 12,
+  },
   headers: {
     accept: 'application/json',
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTEHUB_TOKEN}`,
@@ -18,12 +22,13 @@ const api = axios.create({
 export const FetchNotes = async (
   page: number,
   search: string,
+  tag?: string,
 ): Promise<FetchNotesResponse> => {
   const response = await api.get<FetchNotesResponse>('/notes', {
     params: {
       page,
-      perPage: 12,
       search,
+      tag,
     },
   });
   return response.data;

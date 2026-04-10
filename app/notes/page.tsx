@@ -11,9 +11,10 @@ interface NotesServerProps {
     searchQuery: string;
     currentPage: number;
   }>;
+  selectedTag?: string;
 }
 
-async function NotesServer({ searchParams }: NotesServerProps) {
+async function NotesServer({ searchParams, selectedTag }: NotesServerProps) {
   const params = await searchParams;
   const searchQuery = params.searchQuery || '';
   const currentPage = Number(params.currentPage) || 1;
@@ -21,13 +22,17 @@ async function NotesServer({ searchParams }: NotesServerProps) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['notes', searchQuery, currentPage],
-    queryFn: () => FetchNotes(currentPage, searchQuery),
+    queryKey: ['notes', searchQuery, currentPage, selectedTag],
+    queryFn: () => FetchNotes(currentPage, searchQuery, selectedTag),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Notes initialQuery={searchQuery} initialPage={currentPage} />
+      <Notes
+        initialQuery={searchQuery}
+        initialPage={currentPage}
+        selectedTag={selectedTag}
+      />
     </HydrationBoundary>
   );
 }

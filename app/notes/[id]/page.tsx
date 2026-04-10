@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import NoteDetailsClient from './NoteDetails.client';
 
-type NoteDetailsProps = { params: Promise<{ id: string }> };
+export type NoteDetailsProps = { params: Promise<{ id: string }> };
 
 async function NoteDetails({ params }: NoteDetailsProps) {
   const { id } = await params;
