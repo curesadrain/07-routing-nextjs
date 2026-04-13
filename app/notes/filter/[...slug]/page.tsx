@@ -4,7 +4,7 @@ import {
   dehydrate,
 } from '@tanstack/react-query';
 import { FetchNotes } from '@/lib/api';
-import SidebarNotesClient from './SidebarNotes.client';
+import SidebarNotesClient from './Notes.client';
 
 interface SidebarNotesServerProps {
   searchParams: Promise<{
