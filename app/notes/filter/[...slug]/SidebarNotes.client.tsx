@@ -1,6 +1,6 @@
 'use client';
 
-import css from './Notes.module.css';
+import css from './SidebarNotes.module.css';
 import NoteList from '@/components/NoteList/NoteList';
 import { FetchNotes } from '@/lib/api';
 import { useQuery, keepPreviousData } from '@tanstack/react-query';
@@ -13,12 +13,17 @@ import { useDebouncedCallback } from 'use-debounce';
 import toast, { Toaster } from 'react-hot-toast';
 import Loader from '@/components/Loader/Loader';
 
-interface NotesProps {
+interface SidebarNotesClientProps {
   initialQuery: string;
   initialPage: number;
+  selectedTag?: string;
 }
 
-function Notes({ initialQuery, initialPage }: NotesProps) {
+function SidebarNotesClient({
+  initialQuery,
+  initialPage,
+  selectedTag,
+}: SidebarNotesClientProps) {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [modalState, setModalState] = useState(false);
   const [searchQuery, setSearchQuery] = useState(initialQuery);
@@ -41,8 +46,8 @@ function Notes({ initialQuery, initialPage }: NotesProps) {
     isPlaceholderData,
     error,
   } = useQuery({
-    queryKey: ['notes', searchQuery, currentPage],
-    queryFn: () => FetchNotes(currentPage, searchQuery),
+    queryKey: ['notes', searchQuery, currentPage, selectedTag],
+    queryFn: () => FetchNotes(currentPage, searchQuery, selectedTag),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });
@@ -90,4 +95,4 @@ function Notes({ initialQuery, initialPage }: NotesProps) {
   );
 }
 
-export default Notes;
+export default SidebarNotesClient;
