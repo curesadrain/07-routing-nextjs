@@ -1,26 +1,21 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import css from './NotePreview.module.css';
 import { useQuery } from '@tanstack/react-query';
 import { FetchNoteById } from '@/lib/api';
 
-function NotePreviewClient() {
-  const { id } = useParams<{ id: string }>();
+interface Props {
+  id: string;
+}
 
-  const {
-    data: note,
-    isLoading,
-    error,
-  } = useQuery({
+function NotePreviewClient({ id }: Props) {
+  const { data: note } = useQuery({
     queryKey: ['note', id],
     queryFn: () => FetchNoteById(id),
     refetchOnMount: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-
-  if (error || !note) return <p>Something went wrong.</p>;
+  if (!note) return <p>Something went wrong.</p>;
 
   const dateCheck = note.updatedAt
     ? `Updated at: ${note.updatedAt}`
